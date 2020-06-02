@@ -2,11 +2,7 @@ import cv2
 import os
 import numpy as np 
 import pandas as pd 
-import tensorflow as tf 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten, Activation
-#from tensorflow.keras.utils import np_utils
-from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.utils import to_categorical
 
 IMG_SAVE_PATH = 'image_data'
 
@@ -25,4 +21,19 @@ for directory in os.listdir(IMG_SAVE_PATH):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, (300,300))
         dataset.append([img, directory])
-                  
+
+data, labels = zip(*dataset)
+
+CLASS_MAP = {
+    'rock': 0,
+    'paper': 1,
+    'scissors': 2,
+    'none': 3
+}
+NUM_CLASSES = len(CLASS_MAP)
+
+def maper(temp):
+    return CLASS_MAP[temp]
+labels = list(map(maper, labels))
+labels = to_categorical(labels, NUM_CLASSES=None )
+
