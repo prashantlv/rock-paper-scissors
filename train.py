@@ -3,6 +3,7 @@ import os
 import numpy as np 
 import pandas as pd 
 from tensorflow.keras.utils import to_categorical
+from model import get_model
 
 IMG_SAVE_PATH = 'image_data'
 
@@ -37,3 +38,7 @@ def maper(temp):
 labels = list(map(maper, labels))
 labels = to_categorical(labels, NUM_CLASSES=None )
 
+model = get_model()
+model.compile(optimizer = Adam, loss = 'categorical_crossentrpy', metrics=['Accuracy'])
+model.fit(x=data, y=labels, epochs=100, batch_size=50, validation_split=0.25)
+#model.save('trained_model.h5')
