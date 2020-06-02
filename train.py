@@ -36,7 +36,7 @@ NUM_CLASSES = len(CLASS_MAP)
 def maper(temp):
     return CLASS_MAP[temp]
 labels = list(map(maper, labels))
-labels = to_categorical(labels, NUM_CLASSES=None )
+labels = to_categorical(labels, num_classes=None )
 
 model = get_model()
 model.compile(optimizer = Adam, loss = 'categorical_crossentrpy', metrics=['Accuracy'])
