@@ -37,8 +37,8 @@ def maper(temp):
     return CLASS_MAP[temp]
 labels = list(map(maper, labels))
 labels = to_categorical(labels, num_classes=None )
-
-model = get_model()
+input_size = data.shape
+model = get_model(input_size)
 model.compile(optimizer = Adam, loss = 'categorical_crossentrpy', metrics=['Accuracy'])
 model.fit(x=data, y=labels, epochs=100, batch_size=50, validation_split=0.25)
 #model.save('trained_model.h5')
