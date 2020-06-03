@@ -25,7 +25,7 @@ for directory in os.listdir(IMG_SAVE_PATH):
         dataset.append([img, directory])
 
 data, labels = zip(*dataset)
-
+np.array(data).reshape(-1, 300,300,3)
 CLASS_MAP = {
     'rock': 0,
     'paper': 1,
