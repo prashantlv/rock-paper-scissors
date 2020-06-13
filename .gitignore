@@ -139,5 +139,6 @@ cython_debug/
 *.jpg
 *.png
 image_data/
+image_data/*/
 .vscode/
 __pycache__
