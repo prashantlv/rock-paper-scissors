@@ -136,14 +136,8 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
-
-.vscode
+*.jpg
+*.png
+image_data/
 .vscode/
-.pkl
-.h5
-*.pkl
-*.h5
-.csv
-.zip
-*.zip
-*.csv
+__pycache__
