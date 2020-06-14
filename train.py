@@ -56,5 +56,5 @@ model.compile(
     loss='categorical_crossentropy',
     metrics=['accuracy']
 )
-model.fit(np.array(data), np.array(labels), epochs=10)
+model.fit(data,labels, epochs=10)
 model.save("rock-paper-scissors-model.h5")
