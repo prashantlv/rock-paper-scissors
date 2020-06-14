@@ -1,45 +1,60 @@
 import cv2
-import os
-import numpy as np 
-import pandas as pd 
-from tensorflow.keras.utils import to_categorical
-from model import get_model
+import numpy as np
+import tensorflow as tf
 from tensorflow.keras.optimizers import Adam
+from model import get_model
+import tensorflow.keras.utils as tf_utils
+from tensorflow.keras.layers import Activation, Dropout, Convolution2D, GlobalAveragePooling2D
+from tensorflow.keras.models import Sequential
+import os
 
 IMG_SAVE_PATH = 'image_data'
 
-#load images
+CLASS_MAP = {
+    "rock": 0,
+    "paper": 1,
+    "scissors": 2,
+    "none": 3
+}
 
+NUM_CLASSES = len(CLASS_MAP)
+
+
+def mapper(val):
+    return CLASS_MAP[val]
+
+# load images from the directory
 dataset = []
-
 for directory in os.listdir(IMG_SAVE_PATH):
     path = os.path.join(IMG_SAVE_PATH, directory)
     if not os.path.isdir(path):
         continue
     for item in os.listdir(path):
-        if item.startswith('.'):
+        # to make sure no hidden files get in our way
+        if item.startswith("."):
             continue
         img = cv2.imread(os.path.join(path, item))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = cv2.resize(img, (300,300))
+        img = cv2.resize(img, (227, 227))
         dataset.append([img, directory])
 
+'''
+dataset = [
+    [[...], 'rock'],
+    [[...], 'paper'],
+    ...
+]
+'''
 data, labels = zip(*dataset)
-np.array(data).reshape(-1, 300,300,3)
-CLASS_MAP = {
-    'rock': 0,
-    'paper': 1,
-    'scissors': 2,
-    'none': 3
-}
-NUM_CLASSES = len(CLASS_MAP)
+labels = list(map(mapper, labels))
 
-def maper(temp):
-    return CLASS_MAP[temp]
-labels = list(map(maper, labels))
-labels = to_categorical(labels, num_classes=None )
-input_size = np.array(data).shape
-model = get_model(input_size)
-model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics=['Accuracy'])
-model.fit(x=data, y=labels, epochs=100, batch_size=50, validation_split=0.25)
-#model.save('trained_model.h5')
+labels = tf_utils.to_categorical(labels)
+
+model = get_model()
+model.compile(
+    optimizer=Adam(lr=0.0001),
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
+model.fit(np.array(data), np.array(labels), epochs=10)
+model.save("rock-paper-scissors-model.h5")

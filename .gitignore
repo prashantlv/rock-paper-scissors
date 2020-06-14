@@ -142,3 +142,5 @@ image_data/
 image_data/*/
 .vscode/
 __pycache__
+.h5
+*.h5

@@ -3,10 +3,10 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten, Activation, InputLayer
 from tensorflow.keras.optimizers import Adam
 
-def get_model(temp):
+def get_model():
     #temp = temp[1:]
     model = Sequential()
-    model.add(InputLayer(input_shape=(-1,300,300,3)))
+    model.add(InputLayer(input_shape=(227, 227, 3)))
     model.add(Conv2D(128, (5,5), activation='relu'))
     model.add(Conv2D(128, (5,5), activation='relu'))
     model.add(MaxPooling2D(pool_size=(3,3)))
