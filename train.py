@@ -19,7 +19,6 @@ CLASS_MAP = {
 
 NUM_CLASSES = len(CLASS_MAP)
 
-
 def mapper(val):
     return CLASS_MAP[val]
 
@@ -38,23 +37,17 @@ for directory in os.listdir(IMG_SAVE_PATH):
         img = cv2.resize(img, (227, 227))
         dataset.append([img, directory])
 
-'''
-dataset = [
-    [[...], 'rock'],
-    [[...], 'paper'],
-    ...
-]
-'''
 data, labels = zip(*dataset)
-labels = list(map(mapper, labels))
 
-labels = tf_utils.to_categorical(labels)
-
+labels = np.asarray(list(map(mapper, labels)))
+data = np.asarray(data)
+print(labels.shape)
+print(data.shape)
 model = get_model()
 model.compile(
-    optimizer=Adam(lr=0.0001),
+    optimizer=Adam(lr=0.001),
     loss='categorical_crossentropy',
     metrics=['accuracy']
 )
 model.fit(data,labels, epochs=10)
-model.save("rock-paper-scissors-model.h5")
+# model.save("rock-paper-scissors-model.h5")
