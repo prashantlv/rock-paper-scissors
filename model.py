@@ -27,7 +27,7 @@ def get_model():
     model.add(Flatten())
     model.add(Dense(64))
     model.add(Activation('relu'))
-    model.add(Dense(4   ))
+    model.add(Dense(4))
     model.add(Activation('softmax')) 
     
     return model
