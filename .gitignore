@@ -144,3 +144,4 @@ image_data/*/
 __pycache__
 .h5
 *.h5
+*.ipynb

@@ -7,6 +7,7 @@ import tensorflow.keras.utils as tf_utils
 from tensorflow.keras.layers import Activation, Dropout, Convolution2D, GlobalAveragePooling2D
 from tensorflow.keras.models import Sequential
 import os
+import matplotlib.pyplot as plt
 
 from tensorflow.compat.v1 import ConfigProto
 from tensorflow.compat.v1 import InteractiveSession
@@ -16,7 +17,7 @@ gpu_devices = tf.config.experimental.list_physical_devices("GPU")
 for device in gpu_devices:
     tf.config.experimental.set_memory_growth(device, True)
 
-IMG_SAVE_PATH = 'rock-paper-scissors/image_data'
+IMG_SAVE_PATH = 'image_data'
 
 CLASS_MAP = {
     "rock": 0,
@@ -42,20 +43,20 @@ for directory in os.listdir(IMG_SAVE_PATH):
             continue
         img = cv2.imread(os.path.join(path, item))
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        img = cv2.resize(img, (227, 227))
+        img = cv2.resize(img, (77, 77))
         dataset.append([img, directory])
 
 data, labels = zip(*dataset)
-
 labels = np.asarray(list(map(mapper, labels)))
 data = np.asarray(data)
 print(labels.shape)
 print(data.shape)
 model = get_model()
+
 model.compile(
     optimizer=Adam(lr=0.001),
     loss='categorical_crossentropy',
     metrics=['accuracy']
 )
-model.fit(data,labels, epochs=10)
-# model.save("rock-paper-scissors-model.h5")
+#model.fit(data,labels, epochs=10)
+#model.save("rock-paper-scissors-model.h5")
